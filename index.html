@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Edad Pro</title>
+    <style>
+/*Definicion de variablea: para cambiar colores en un solo lugar*/
+:root {
+    --primary:#6366f1; /*morado principar*/
+    --bg: #f8fafc; /*Fondo gris my claro*/
+    --card: #ffffff; /*fondo blanco para la tarjeta*/
+    --text: #1e293b; /*Color de texto oscuro*/
+}
+/*Cuerpo: centrado total de la tarjeta en pantalla*/
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;/*flexboox para centrar contenido*/
+    justify-content: center;/*centrado horizontal*/
+    align-items: center;/*centrado vertical*/
+    min-height: 100vh;/*ocupa el 100% del alto de la ventana */
+}
+
+/*TARJETA CONTENEDORA: Uso de CSS GRID*/
+.container {
+    display: grid; /*GRID: define una rejilla*/
+    grid-template-columns: 1fr;/*una sola columna que ocupa todo el ancho*/
+    gap: 2rem; /*Espacio constante entre los elmentos hijos*/
+    width: 90%;
+    max-width: 500px;
+    background: var(--card);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px (0,0,0,0,.05); /*Sombra suave*/
+}
+
+head {
+    text-align: center;
+}
+
+/*GRUPO DE ENTRADA: Uso de FLEXBOX*/
+.input-group {
+display: flex;/*FLEBOOX: Para organizar label,input y boton*/
+flex-direction: column;/*Alineacion vertical (uno sobre otro)*/
+gap: 0.8rem;/*Espacio entre los elementos del formulario*/
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+input[type="date"] {
+    padding: 0.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s; /*Suavisa el cambio de color al hacer click*/
+}
+
+/*Efecto cuando el usuario hace clic en el input*/
+input[type="date"]:focus{
+    border-color: var(--primary)
+}
+button{
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+/*Efectos visuales para el boton*/
+button:hover {opacity: 0.9;}
+button:active {transform: scale(0.98);} /*Efecto de hundirse al presionar*/
+/*AREA DE RESULTADO: Oculta por defecto*/
+#result {
+margin-top: 1rem;
+padding: 1.5rem;
+background: #f1f5f9;
+border-radius: 1rem;
+text-align: center;
+display: none; /*Se activa mediante JavaScrip al calcular*/
+animation: fadeIn 0.5s ease; /*Animacion de aparicion*/
+}
+.age-val{
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    display: block;
+}
+
+/*ANIMACIÓN: Desplazamiento suave hacia arriba al aparecer*/
+@keyframes fadeIn {
+    from {opacity: 0; transform: translate(10px);}
+    to {opacity: 1; transform: translate(0);}
+}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>Calculadora de edad</h2>
+            <p>Introduce tu fecha de nacimiento</p>
+        </header>
+
+        <main class="input-group">
+<label for="birthdate">Fecha de nacimiento</label>
+<input type="date" id="birthdate">
+<button onclick="calculateAge()">Calcular Edad</button>
+        </main>
+    
+ <section id="result">
+    <span id="ageText">Tienes aproximadamente:</span>
+    <span class="age-val" id="yearsDisplay">-- años</span>
+    <small id="detailDisplay"></small>
+ </section>
+    </div>
+
+    <script>
+        function calculateAge() {
+            //1.Obtener los elementos del DOM
+            const birthdateInput = document.getElementById('birthdate').value;
+            const resultDiv = document.getElementById('result');
+
+            //2. Validacion: si no hay fecha, avisar al usuario
+            if (!birthdateInput) {
+                alert("Por favor, seleccione y una fecha");
+                return;
+            }
+            
+            //3. Convertir strings a objetos de fechas de JavaScript
+            const birthDate = new Date(birthdateInput);
+            const today = new Date();
+            
+            //4.Calculo inicial de años y meses
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            let days = today.getDate() - birthDate.getDate();
+            
+            /*5.LOGICA DE CORRECION:
+            Si el mes actual es menor al de nacimiento, o si el es el mismo mes pero el dia actual es menor al de nacimiento, significa que el usuario aun no ha cumplido este año.
+            */
+        if (months < 0 || (months === 0 && days < 0)) {
+            years--; //Restamos un año de la diferencia simple
+        }
+    
+        //6. Calculo de meses adicionales para el detalle
+        const m = today.getMonth() - birthDate.getMonth();
+        const diffMonths = m < 0 ? 12 + m : m ;
+
+        //7.Insertar los datos en el HTML
+        document.getElementById(`yearsDisplay`).innerText = `${years} años`;
+        const detail = `Y ${diffMonths} meses cumplidos desde tu ultimo cumpleaños.`
+        document.getElementById('detailDisplay').innerText = detail;
+
+        //8. Hacer visible el recuadro de resultado
+        resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
