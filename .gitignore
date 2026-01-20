@@ -1,0 +1,52 @@
+# --- SISTEMA OPERATIVO ---
+.DS_Store
+Thumbs.db
+*.swp
+Desktop.ini
+
+# --- EDITORES DE CÓDIGO (VS Code, IntelliJ, etc) ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.env
+.venv
+env/
+venv/
+
+# --- NODE / JAVASCRIPT ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next/
+dist/
+build/
+out/
+
+# --- PYTHON ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.map
+
+# --- ARCHIVOS DE CONFIGURACIÓN SENSIBLE ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# --- LOGS Y TEMPORALES ---
+logs
+*.log
+npm-debug.log*
